@@ -1,0 +1,14 @@
+# 1. AWS Lambda Pythonランタイムイメージを指定
+FROM public.ecr.aws/lambda/python:3.8
+
+# 2. requirements.txtをコピーしてパッケージをインストール
+COPY requirements.txt /var/task/
+RUN pip install --no-cache-dir -r /var/task/requirements.txt
+
+# 3. main.py と data/ を/var/taskにコピー
+COPY main.py /var/task/
+COPY data /var/task/data/
+
+# 4. 作業ディレクトリを/var/taskに設定し、main.pyを実行
+WORKDIR /var/task
+CMD ["main.lambda_handler"]
